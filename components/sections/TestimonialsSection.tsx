@@ -25,7 +25,7 @@ export default function TestimonialsSection() {
       <div className="mt-12 flex gap-6 animate-marquee w-max">
         {[...testimonials, ...testimonials].map((t, i) => (
           <div
-            key={i}
+            key={`${t.name}-${i}`}
             className="w-[350px] shrink-0 rounded-[20px] bg-white p-8 border border-border"
           >
             <Quote className="h-8 w-8 text-muted/20" />

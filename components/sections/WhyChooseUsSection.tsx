@@ -42,7 +42,7 @@ export default function WhyChooseUsSection() {
           <ScrollReveal>
             <div className="relative aspect-[3/4] overflow-hidden rounded-[20px]">
               <AnimatedImage
-                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&q=80"
+                src="/pexels-instasky-12951630.jpg"
                 alt="AI technology dashboard"
                 effect="ken-burns"
               />

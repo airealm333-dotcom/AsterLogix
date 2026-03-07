@@ -25,7 +25,7 @@ export default function FleetSection() {
           <ScrollReveal delay={0.15}>
             <div className="relative aspect-[4/3] overflow-hidden rounded-[20px]">
               <AnimatedImage
-                src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=700&q=80"
+                src="/pexels-duaenam-kosonglima-424968847-35806771.jpg"
                 alt="AI technology infrastructure"
                 effect="zoom-in"
               />
@@ -37,7 +37,7 @@ export default function FleetSection() {
           <ScrollReveal delay={0.1}>
             <div className="relative aspect-[4/3] overflow-hidden rounded-[20px]">
               <AnimatedImage
-                src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80"
+                src="/pexels-eduardo199o9-178988127-17824889.jpg"
                 alt="AI multi-agent orchestration"
                 effect="reveal"
               />

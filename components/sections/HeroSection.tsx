@@ -1,48 +1,76 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Button from "@/components/ui/Button";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import Link from "next/link";
 
 export default function HeroSection() {
-  const [videoLoaded, setVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
+
+  const handleReady = useCallback(() => setVideoReady(true), []);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+
+    if (v.readyState >= 2) {
+      setVideoReady(true);
+      return;
+    }
+
+    v.addEventListener("loadeddata", handleReady);
+    v.addEventListener("canplay", handleReady);
+
+    v.load();
+
+    return () => {
+      v.removeEventListener("loadeddata", handleReady);
+      v.removeEventListener("canplay", handleReady);
+    };
+  }, [handleReady]);
 
   return (
-    <section className="relative min-h-[100svh] overflow-hidden bg-surface-dark">
-      {/* Background video */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        onLoadedData={() => setVideoLoaded(true)}
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
-          videoLoaded ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <source src="/hero.mp4" type="video/mp4" />
-      </video>
+    <section className="relative h-[72vh] min-h-[520px] bg-surface-dark">
+      {/* Video + overlays clipped to section bounds */}
+      <div className="absolute inset-0 overflow-hidden">
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+            videoReady ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
 
-      {/* Dark gradient overlay — heavier on left for text readability, heavier on top for navbar */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/40" />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/50" />
+        <div className="absolute inset-0 bg-black/65" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/25 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+      </div>
 
-      {/* Content */}
-      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-7xl items-center px-6 py-32 lg:py-40">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+      {/* Content — overflows below the section so the card can extend past */}
+      <div className="relative z-10 mx-auto flex h-full max-w-7xl items-end px-6 pt-24 pb-0">
+        <div className="grid w-full items-end gap-12 lg:grid-cols-2">
+          {/* Hero text — pushed up a bit from the very bottom */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
+            className="pb-[4.5rem] lg:pb-20"
           >
             <h1 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
               AI agents that run your{" "}
               <span className="text-primary">supply chain</span> on autopilot
             </h1>
-            <p className="mt-6 max-w-lg text-lg text-white/70 leading-relaxed">
+            <p className="mt-6 max-w-lg text-lg text-white/80 leading-relaxed">
               We build and deploy agentic AI systems that autonomously manage
               demand forecasting, procurement, disruption monitoring, and
               logistics — so your ops team stops fighting fires and starts
@@ -60,32 +88,44 @@ export default function HeroSection() {
             </div>
           </motion.div>
 
-          {/* Floating case study card */}
+          {/* Floating case study card — overflows below hero */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="hidden lg:flex justify-end"
+            className="hidden lg:flex justify-end mb-[-116px]"
           >
             <Link
               href="/case-studies/distributor-cuts-forecast-error-by-57-percent"
-              className="block max-w-[280px] rounded-[20px] bg-white/10 p-6 backdrop-blur-xl border border-white/20 transition-all hover:bg-white/15 hover:border-white/30"
+              className="block w-[392px] rounded-[20px] bg-white p-6 transition-all"
             >
-              <p className="text-sm font-semibold leading-snug text-white">
+              <p className="text-sm font-semibold leading-snug text-foreground">
                 Distributor cuts forecast error by 57%
               </p>
-              <div className="mt-4 flex gap-6">
-                <div>
-                  <p className="text-2xl font-bold text-primary">
+              <div className="relative mt-4 aspect-[16/9] overflow-hidden rounded-[12px]">
+                <Image
+                  src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=700&q=80"
+                  alt="AI supply chain dashboard"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="mt-5 grid grid-cols-2 divide-x divide-border">
+                <div className="px-2 text-center">
+                  <p className="text-xs text-muted leading-snug">
+                    Error reduction
+                  </p>
+                  <p className="mt-1 text-2xl font-bold text-foreground">
                     <AnimatedCounter value={40} suffix="%" />
                   </p>
-                  <p className="text-xs text-white/50">Error reduction</p>
                 </div>
-                <div>
-                  <p className="text-2xl font-bold text-primary">
+                <div className="px-2 text-center">
+                  <p className="text-xs text-muted leading-snug">
+                    Response time
+                  </p>
+                  <p className="mt-1 text-2xl font-bold text-foreground">
                     <AnimatedCounter value={60} suffix="s" />
                   </p>
-                  <p className="text-xs text-white/50">Response time</p>
                 </div>
               </div>
             </Link>

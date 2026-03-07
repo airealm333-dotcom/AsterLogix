@@ -46,7 +46,7 @@ export default function AnimatedImage({
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <div ref={ref} className={`overflow-hidden ${containerClassName}`}>
+    <div ref={ref} className={`relative h-full w-full overflow-hidden ${containerClassName}`}>
       <motion.div
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Brain, Zap, Bot } from "lucide-react";
+import { Brain, Zap, Bot, Sun } from "lucide-react";
 import SectionLabel from "@/components/ui/SectionLabel";
 import Button from "@/components/ui/Button";
 import ScrollReveal from "@/components/ui/ScrollReveal";
@@ -13,51 +13,85 @@ const badges = [
 ];
 
 const images = [
-  { src: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80", effect: "zoom-in" as const },
-  { src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80", effect: "reveal" as const },
-  { src: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80", effect: "slide-up" as const },
+  { src: "/pexels-tiger-lily-4483772.jpg", alt: "Supply chain logistics" },
+  { src: "/pexels-tima-miroshnichenko-6169060.jpg", alt: "AI warehouse automation" },
+  { src: "/pexels-web-buz-29454379.jpg", alt: "Smart logistics operations" },
 ];
 
 export default function DrivingChangeSection() {
   return (
     <section className="py-20 lg:py-28 bg-white">
       <div className="mx-auto max-w-7xl px-6">
+        {/* Heading */}
         <ScrollReveal>
           <div className="text-center">
-            <SectionLabel>Why Agentic AI</SectionLabel>
-            <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl max-w-3xl mx-auto">
-              From chatbots that suggest to agents that act — AI systems that
-              autonomously manage your supply chain.
+            <Sun className="mx-auto h-8 w-8 text-muted/60" strokeWidth={1} />
+            <SectionLabel>Driving Change</SectionLabel>
+            <h2 className="mt-4 text-[1.75rem] font-normal leading-[1.35] tracking-tight sm:text-[2rem] lg:text-[2.5rem] lg:leading-[1.3] max-w-2xl mx-auto text-foreground">
+              At AsterLogix, we are{" "}
+              <span className="text-primary italic">replacing</span>{" "}
+              <span className="font-semibold">manual workflows</span> with
+              agentic AI across{" "}
+              <span className="text-primary italic">every</span> supply chain.
             </h2>
           </div>
         </ScrollReveal>
 
-        <div className="mt-16 grid gap-6 md:grid-cols-3">
-          {images.map((img, i) => (
-            <ScrollReveal key={i} delay={i * 0.15}>
-              <div className="group relative aspect-[3/4] overflow-hidden rounded-[20px]">
+        {/* Staggered image gallery */}
+        <div className="mt-16 flex items-center justify-center gap-5 lg:gap-7 px-4">
+          {/* Left image — offset down */}
+          <ScrollReveal delay={0}>
+            <div className="group relative w-[240px] lg:w-[280px] aspect-[3/4] overflow-hidden rounded-[20px]">
+              <AnimatedImage
+                src={images[0].src}
+                alt={images[0].alt}
+                effect="zoom-in"
+                className="transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+          </ScrollReveal>
+
+          {/* Center image — green border */}
+          <ScrollReveal delay={0.15}>
+            <div className="rounded-[24px] border-[2.5px] border-primary p-1.5">
+              <div className="group relative w-[240px] lg:w-[280px] aspect-[3/4] overflow-hidden rounded-[20px]">
                 <AnimatedImage
-                  src={img.src}
-                  alt="AI automation"
-                  effect={img.effect}
+                  src={images[1].src}
+                  alt={images[1].alt}
+                  effect="zoom-in"
                   className="transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
               </div>
-            </ScrollReveal>
-          ))}
+            </div>
+          </ScrollReveal>
+
+          {/* Right image */}
+          <ScrollReveal delay={0.3}>
+            <div className="group relative w-[240px] lg:w-[280px] aspect-[3/4] overflow-hidden rounded-[20px]">
+              <AnimatedImage
+                src={images[2].src}
+                alt={images[2].alt}
+                effect="slide-up"
+                className="transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+          </ScrollReveal>
         </div>
 
+        {/* CTA button — own row */}
         <ScrollReveal>
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
-            <Button href="/about">Learn more about us</Button>
+          <div className="mt-14 flex justify-center">
+            <Button href="/about">More about us</Button>
+          </div>
+        </ScrollReveal>
+
+        {/* Icon + label badges — separate row */}
+        <ScrollReveal>
+          <div className="mt-10 flex items-start justify-center gap-16">
             {badges.map(({ icon: Icon, label }) => (
-              <div
-                key={label}
-                className="flex items-center gap-2 rounded-full border border-border bg-white px-4 py-2.5"
-              >
-                <Icon className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium">{label}</span>
+              <div key={label} className="flex flex-col items-center gap-2.5">
+                <Icon className="h-6 w-6 text-muted" strokeWidth={1.5} />
+                <span className="text-sm font-medium text-foreground">{label}</span>
               </div>
             ))}
           </div>

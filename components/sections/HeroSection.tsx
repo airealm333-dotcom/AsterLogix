@@ -43,7 +43,8 @@ export default function HeroSection() {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
+          poster="/hero-poster.jpg"
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
             videoReady ? "opacity-100" : "opacity-0"
           }`}
@@ -107,6 +108,8 @@ export default function HeroSection() {
                   src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=700&q=80"
                   alt="AI supply chain dashboard"
                   fill
+                  sizes="392px"
+                  priority
                   className="object-cover"
                 />
               </div>

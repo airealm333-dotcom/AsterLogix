@@ -9,6 +9,7 @@ type AnimatedImageProps = {
   alt: string;
   fill?: boolean;
   priority?: boolean;
+  sizes?: string;
   className?: string;
   containerClassName?: string;
   effect?: "zoom-in" | "slide-up" | "reveal" | "ken-burns";
@@ -38,6 +39,7 @@ export default function AnimatedImage({
   alt,
   fill = true,
   priority = false,
+  sizes,
   className = "",
   containerClassName = "",
   effect = "zoom-in",
@@ -58,6 +60,7 @@ export default function AnimatedImage({
           alt={alt}
           fill={fill}
           priority={priority}
+          sizes={sizes || "(max-width: 768px) 100vw, 50vw"}
           className={`object-cover ${className}`}
         />
       </motion.div>

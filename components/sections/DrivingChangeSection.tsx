@@ -46,6 +46,7 @@ export default function DrivingChangeSection() {
                 src={images[0].src}
                 alt={images[0].alt}
                 effect="zoom-in"
+                sizes="280px"
                 className="transition-transform duration-700 group-hover:scale-110"
               />
             </div>
@@ -59,6 +60,7 @@ export default function DrivingChangeSection() {
                   src={images[1].src}
                   alt={images[1].alt}
                   effect="zoom-in"
+                  sizes="280px"
                   className="transition-transform duration-700 group-hover:scale-110"
                 />
               </div>
@@ -72,6 +74,7 @@ export default function DrivingChangeSection() {
                 src={images[2].src}
                 alt={images[2].alt}
                 effect="slide-up"
+                sizes="280px"
                 className="transition-transform duration-700 group-hover:scale-110"
               />
             </div>

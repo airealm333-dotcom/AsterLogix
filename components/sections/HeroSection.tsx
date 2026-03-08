@@ -34,7 +34,7 @@ export default function HeroSection() {
   }, [handleReady]);
 
   return (
-    <section className="relative h-[72vh] min-h-[520px] bg-surface-dark">
+    <section className="relative h-[72vh] min-h-[420px] sm:min-h-[520px] bg-surface-dark">
       {/* Video + overlays clipped to section bounds */}
       <div className="absolute inset-0 overflow-hidden">
         <video
@@ -43,7 +43,7 @@ export default function HeroSection() {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           poster="/hero-poster.jpg"
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
             videoReady ? "opacity-100" : "opacity-0"
@@ -65,13 +65,13 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="pb-[4.5rem] lg:pb-20"
+            className="pb-10 sm:pb-[4.5rem] lg:pb-20"
           >
-            <h1 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
               AI agents that run your{" "}
               <span className="text-primary">supply chain</span> on autopilot
             </h1>
-            <p className="mt-6 max-w-lg text-lg text-white/80 leading-relaxed">
+            <p className="mt-4 sm:mt-6 max-w-lg text-base sm:text-lg text-white/80 leading-relaxed">
               We build and deploy agentic AI systems that autonomously manage
               demand forecasting, procurement, disruption monitoring, and
               logistics — so your ops team stops fighting fires and starts

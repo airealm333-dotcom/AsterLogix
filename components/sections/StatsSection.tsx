@@ -23,12 +23,12 @@ export default function StatsSection() {
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {siteConfig.stats.map((stat, i) => (
             <ScrollReveal key={i} delay={i * 0.1}>
-              <div className="rounded-[20px] bg-card-dark p-8 border border-white/10">
+              <div className="rounded-[20px] bg-card-dark p-5 sm:p-8 border border-white/10">
                 <p className="text-sm text-white/60">{stat.label}</p>
                 <div className="my-3">
                   <Leaf className="h-5 w-5 text-primary/60" />
                 </div>
-                <p className="text-4xl font-bold text-primary">
+                <p className="text-3xl sm:text-4xl font-bold text-primary">
                   <AnimatedCounter
                     value={stat.value}
                     suffix={stat.suffix}

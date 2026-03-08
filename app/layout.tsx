@@ -30,6 +30,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preload" href="/hero.mp4" as="video" type="video/mp4" />
+        <link rel="preload" href="/hero-poster.jpg" as="image" />
+      </head>
       <body
         className={`${instrumentSans.variable} ${inter.variable} antialiased`}
       >

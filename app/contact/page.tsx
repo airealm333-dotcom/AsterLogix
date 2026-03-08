@@ -80,7 +80,7 @@ export default function ContactPage() {
             <ScrollReveal delay={0.15}>
               <form
                 onSubmit={(e) => e.preventDefault()}
-                className="rounded-[20px] border border-border bg-surface p-8"
+                className="rounded-[20px] border border-border bg-surface p-4 sm:p-6 lg:p-8"
               >
                 <h3 className="text-xl font-bold">Book a free AI assessment</h3>
                 <p className="mt-2 text-sm text-muted">20 minutes. No commitment. Walk away knowing exactly where AI saves you money.</p>

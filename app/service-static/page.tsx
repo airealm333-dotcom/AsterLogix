@@ -149,7 +149,7 @@ export default function ServiceStaticPage() {
             </div>
           </ScrollReveal>
 
-          <div className="mt-16 grid gap-6 lg:grid-cols-3">
+          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {siteConfig.offers.map((offer, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
                 <div

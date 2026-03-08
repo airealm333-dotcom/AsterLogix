@@ -27,9 +27,9 @@ export default function LogoMarquee() {
               alt={logo.name}
               width={logo.width}
               height={logo.height}
-              className="h-8 w-auto object-contain"
+              className="h-6 sm:h-8 w-auto object-contain"
             />
-            <span className="text-lg font-bold text-foreground/60">
+            <span className="text-sm sm:text-lg font-bold text-foreground/60">
               {logo.name}
             </span>
           </div>

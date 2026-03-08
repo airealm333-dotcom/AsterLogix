@@ -19,11 +19,11 @@ export default function Footer() {
             </p>
             <div className="flex flex-col gap-2">
               <span className="text-xs text-white/40 uppercase tracking-wider">Get supply chain AI insights.</span>
-              <form className="mt-2 flex gap-2" onSubmit={(e) => e.preventDefault()}>
+              <form className="mt-2 flex flex-col sm:flex-row gap-2" onSubmit={(e) => e.preventDefault()}>
                 <input
                   type="email"
                   placeholder="Your email"
-                  className="flex-1 rounded-full bg-card-dark px-4 py-2.5 text-sm text-white placeholder:text-white/40 outline-none border border-white/10 focus:border-primary"
+                  className="min-w-0 flex-1 rounded-full bg-card-dark px-4 py-2.5 text-sm text-white placeholder:text-white/40 outline-none border border-white/10 focus:border-primary"
                 />
                 <button
                   type="submit"

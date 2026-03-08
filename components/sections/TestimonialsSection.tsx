@@ -26,7 +26,7 @@ export default function TestimonialsSection() {
         {[...testimonials, ...testimonials].map((t, i) => (
           <div
             key={`${t.name}-${i}`}
-            className="w-[350px] shrink-0 rounded-[20px] bg-white p-8 border border-border"
+            className="w-[min(350px,calc(100vw-3rem))] shrink-0 rounded-[20px] bg-white p-5 sm:p-8 border border-border"
           >
             <Quote className="h-8 w-8 text-muted/20" />
             <p className="mt-4 text-sm text-muted leading-relaxed italic">

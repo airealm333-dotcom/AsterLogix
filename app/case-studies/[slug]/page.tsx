@@ -51,8 +51,8 @@ export default async function CaseStudyPage({
             </h1>
             <div className="mt-6 flex flex-wrap gap-4">
               {cs.metrics.map((m, i) => (
-                <div key={i} className="rounded-[10px] bg-white border border-border px-5 py-3">
-                  <span className="text-2xl font-bold text-primary">{m.value}</span>
+                <div key={i} className="rounded-[10px] bg-white border border-border px-3 py-2 sm:px-5 sm:py-3">
+                  <span className="text-xl sm:text-2xl font-bold text-primary">{m.value}</span>
                   <p className="text-xs text-muted mt-1">{m.label}</p>
                 </div>
               ))}

@@ -72,8 +72,8 @@ export default function ServicesSection() {
                       {service.description}
                     </p>
                   </div>
-                  <div className="hidden sm:flex items-center gap-2 shrink-0 text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
-                    View detail
+                  <div className="flex items-center gap-2 shrink-0 text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                    <span className="hidden sm:inline">View detail</span>
                     <ArrowUpRight className="h-4 w-4" />
                   </div>
                 </Link>

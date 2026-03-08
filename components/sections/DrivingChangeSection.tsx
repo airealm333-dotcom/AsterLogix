@@ -38,43 +38,40 @@ export default function DrivingChangeSection() {
         </ScrollReveal>
 
         {/* Staggered image gallery */}
-        <div className="mt-16 flex items-center justify-center gap-5 lg:gap-7 px-4">
-          {/* Left image — offset down */}
+        <div className="mt-16 flex flex-col items-center gap-5 sm:flex-row sm:justify-center lg:gap-7 px-4">
           <ScrollReveal delay={0}>
-            <div className="group relative w-[240px] lg:w-[280px] aspect-[3/4] overflow-hidden rounded-[20px]">
+            <div className="group relative w-full max-w-[280px] sm:w-[240px] lg:w-[280px] aspect-[3/4] overflow-hidden rounded-[20px]">
               <AnimatedImage
                 src={images[0].src}
                 alt={images[0].alt}
                 effect="zoom-in"
-                sizes="280px"
+                sizes="(max-width: 640px) 280px, 240px"
                 className="transition-transform duration-700 group-hover:scale-110"
               />
             </div>
           </ScrollReveal>
 
-          {/* Center image — green border */}
           <ScrollReveal delay={0.15}>
             <div className="rounded-[24px] border-[2.5px] border-primary p-1.5">
-              <div className="group relative w-[240px] lg:w-[280px] aspect-[3/4] overflow-hidden rounded-[20px]">
+              <div className="group relative w-full max-w-[280px] sm:w-[240px] lg:w-[280px] aspect-[3/4] overflow-hidden rounded-[20px]">
                 <AnimatedImage
                   src={images[1].src}
                   alt={images[1].alt}
                   effect="zoom-in"
-                  sizes="280px"
+                  sizes="(max-width: 640px) 280px, 240px"
                   className="transition-transform duration-700 group-hover:scale-110"
                 />
               </div>
             </div>
           </ScrollReveal>
 
-          {/* Right image */}
           <ScrollReveal delay={0.3}>
-            <div className="group relative w-[240px] lg:w-[280px] aspect-[3/4] overflow-hidden rounded-[20px]">
+            <div className="group relative w-full max-w-[280px] sm:w-[240px] lg:w-[280px] aspect-[3/4] overflow-hidden rounded-[20px]">
               <AnimatedImage
                 src={images[2].src}
                 alt={images[2].alt}
                 effect="slide-up"
-                sizes="280px"
+                sizes="(max-width: 640px) 280px, 240px"
                 className="transition-transform duration-700 group-hover:scale-110"
               />
             </div>
@@ -90,7 +87,7 @@ export default function DrivingChangeSection() {
 
         {/* Icon + label badges — separate row */}
         <ScrollReveal>
-          <div className="mt-10 flex items-start justify-center gap-16">
+          <div className="mt-10 flex flex-wrap items-start justify-center gap-6 sm:gap-10 lg:gap-16">
             {badges.map(({ icon: Icon, label }) => (
               <div key={label} className="flex flex-col items-center gap-2.5">
                 <Icon className="h-6 w-6 text-muted" strokeWidth={1.5} />

@@ -68,7 +68,7 @@ export default function IndustriesSection() {
               />
             </div>
             <div>
-              <h3 className="text-2xl font-bold">{industry.name}</h3>
+              <h3 className="text-xl sm:text-2xl font-bold">{industry.name}</h3>
               <p className="mt-3 text-muted leading-relaxed">
                 {industry.description}
               </p>

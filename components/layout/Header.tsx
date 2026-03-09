@@ -12,6 +12,8 @@ export default function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const isHomePage = pathname === "/";
+  const showDarkNav = scrolled || !isHomePage;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -35,12 +37,12 @@ export default function Header() {
       <header className="fixed top-0 left-0 right-0 z-50">
         <div
           className={`mx-auto max-w-7xl px-4 transition-all duration-300 ${
-            scrolled ? "pt-2" : "pt-4"
+            showDarkNav ? "pt-2" : "pt-4"
           }`}
         >
           <nav
             className={`flex items-center justify-between rounded-full px-4 sm:px-6 py-3 transition-all duration-300 ${
-              scrolled
+              showDarkNav
                 ? "bg-white/95 backdrop-blur-md shadow-lg"
                 : "bg-transparent border border-white/20"
             }`}
@@ -48,7 +50,7 @@ export default function Header() {
             <div className="flex items-center gap-1">
               <button
                 className={`md:hidden p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors duration-300 ${
-                  scrolled ? "text-foreground" : "text-white"
+                  showDarkNav ? "text-foreground" : "text-white"
                 }`}
                 onClick={() => setMobileOpen(true)}
                 aria-label="Open menu"
@@ -59,7 +61,7 @@ export default function Header() {
               <Link
                 href="/"
                 className={`flex items-center gap-2 text-xl font-bold transition-colors duration-300 ${
-                  scrolled ? "text-foreground" : "text-white"
+                  showDarkNav ? "text-foreground" : "text-white"
                 }`}
               >
                 <Brain className="h-6 w-6 text-primary" />
@@ -76,10 +78,10 @@ export default function Header() {
                       href={item.href}
                       className={`transition-colors duration-300 ${
                         isActive
-                          ? scrolled
+                          ? showDarkNav
                             ? "text-[0.9375rem] font-semibold text-foreground"
                             : "text-[0.9375rem] font-semibold text-white"
-                          : scrolled
+                          : showDarkNav
                             ? "text-sm font-medium text-muted hover:text-foreground"
                             : "text-sm font-medium text-white/70 hover:text-white"
                       }`}
@@ -92,7 +94,7 @@ export default function Header() {
             </ul>
 
             <div className="hidden md:block">
-              {scrolled ? (
+              {showDarkNav ? (
                 <Button href="/contact" variant="primary">
                   Book AI Assessment
                 </Button>

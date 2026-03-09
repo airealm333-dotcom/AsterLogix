@@ -13,9 +13,9 @@ export default function WhyChooseUsSection() {
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
             <ScrollReveal>
-              <SectionLabel>Why AsterLogix</SectionLabel>
+              <SectionLabel>Why SolidRoutes</SectionLabel>
               <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-4xl">
-                Why AsterLogix is the smarter choice
+                Why SolidRoutes is the smarter choice
               </h2>
             </ScrollReveal>
 

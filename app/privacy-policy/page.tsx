@@ -2,7 +2,7 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import SectionLabel from "@/components/ui/SectionLabel";
 
 export const metadata = {
-  title: "Privacy Policy — AsterLogix",
+  title: "Privacy Policy — SolidRoutes",
   description: "Our commitment to protecting your privacy and data.",
 };
 

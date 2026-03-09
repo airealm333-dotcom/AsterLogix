@@ -63,7 +63,7 @@ export default function Header() {
                 }`}
               >
                 <Brain className="h-6 w-6 text-primary" />
-                <span>AsterLogix</span>
+                <span>SolidRoutes</span>
               </Link>
             </div>
 
@@ -140,7 +140,7 @@ export default function Header() {
                     onClick={() => setMobileOpen(false)}
                   >
                     <Brain className="h-6 w-6 text-primary" />
-                    <span>AsterLogix</span>
+                    <span>SolidRoutes</span>
                   </Link>
                   <button
                     className="p-2 text-muted hover:text-foreground transition-colors"

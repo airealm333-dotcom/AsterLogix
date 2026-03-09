@@ -7,7 +7,7 @@ import StatsSection from "@/components/sections/StatsSection";
 import CTASection from "@/components/sections/CTASection";
 
 export const metadata = {
-  title: "About — AsterLogix",
+  title: "About — SolidRoutes",
   description: "The AI agency built exclusively for supply chain automation.",
 };
 
@@ -54,7 +54,7 @@ export default function AboutPage() {
                 <span className="text-primary">supply chain</span>
               </h1>
               <p className="mt-6 text-muted leading-relaxed max-w-lg">
-                AsterLogix is an agentic AI implementation agency specializing in
+                SolidRoutes is an agentic AI implementation agency specializing in
                 US mid-market supply chain companies. We build, deploy, and manage
                 AI agents that autonomously handle the operational tasks your team
                 shouldn&apos;t be doing manually — demand forecasting, procurement,

@@ -6,7 +6,7 @@ import CTASection from "@/components/sections/CTASection";
 import { blogPosts } from "@/data/blogPosts";
 
 export const metadata = {
-  title: "Blog — AsterLogix",
+  title: "Blog — SolidRoutes",
   description: "Insights on agentic AI, supply chain automation, and the future of operations.",
 };
 

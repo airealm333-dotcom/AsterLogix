@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "AsterLogix",
+  name: "SolidRoutes",
   tagline: "AI-Powered Supply Chain Automation",
   description:
     "We build and deploy agentic AI systems that autonomously manage demand forecasting, procurement, disruption monitoring, and logistics — so your operations team stops fighting fires and starts running on autopilot.",
@@ -139,7 +139,7 @@ export const siteConfig = {
       name: "Rachel Kim",
       role: "VP of Operations, NovaTech Distribution",
       quote:
-        "AsterLogix cut our demand forecast error from 31% to 14% in six weeks. Our stockout rate dropped by 60% and we've freed up two full-time planners.",
+        "SolidRoutes cut our demand forecast error from 31% to 14% in six weeks. Our stockout rate dropped by 60% and we've freed up two full-time planners.",
     },
     {
       name: "Marcus Chen",
@@ -169,7 +169,7 @@ export const siteConfig = {
       name: "James Thornton",
       role: "Supply Chain Director, MedLine Pharma",
       quote:
-        "Compliance in pharma supply chain is brutal. AsterLogix built agents that handle supplier qualification docs, expiry tracking, and cold-chain alerts — things we were doing manually across four systems.",
+        "Compliance in pharma supply chain is brutal. SolidRoutes built agents that handle supplier qualification docs, expiry tracking, and cold-chain alerts — things we were doing manually across four systems.",
     },
   ],
   fleetFeatures: [

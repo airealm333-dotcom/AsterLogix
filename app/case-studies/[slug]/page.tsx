@@ -15,7 +15,7 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
   return params.then(({ slug }) => {
     const cs = caseStudies.find((c) => c.slug === slug);
     return {
-      title: cs ? `${cs.title} — AsterLogix` : "Case Study — AsterLogix",
+      title: cs ? `${cs.title} — SolidRoutes` : "Case Study — SolidRoutes",
       description: cs?.excerpt ?? "",
     };
   });

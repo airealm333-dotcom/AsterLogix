@@ -18,7 +18,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "AsterLogix — AI-Powered Supply Chain Automation",
+  title: "SolidRoutes — AI-Powered Supply Chain Automation",
   description:
     "We build and deploy agentic AI systems that autonomously manage demand forecasting, procurement, disruption monitoring, and logistics for mid-market supply chain companies.",
 };

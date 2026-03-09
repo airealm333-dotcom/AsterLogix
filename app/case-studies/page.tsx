@@ -7,7 +7,7 @@ import CTASection from "@/components/sections/CTASection";
 import { caseStudies } from "@/data/caseStudies";
 
 export const metadata = {
-  title: "Case Studies — AsterLogix",
+  title: "Case Studies — SolidRoutes",
   description: "Real results from AI agent deployments in mid-market supply chain companies.",
 };
 

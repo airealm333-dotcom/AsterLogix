@@ -65,7 +65,7 @@ export default function Header() {
                 }`}
               >
                 <Brain className="h-6 w-6 text-primary" />
-                <span>SolidRoutes</span>
+                <span>Experidium</span>
               </Link>
             </div>
 
@@ -142,7 +142,7 @@ export default function Header() {
                     onClick={() => setMobileOpen(false)}
                   >
                     <Brain className="h-6 w-6 text-primary" />
-                    <span>SolidRoutes</span>
+                    <span>Experidium</span>
                   </Link>
                   <button
                     className="p-2 text-muted hover:text-foreground transition-colors"

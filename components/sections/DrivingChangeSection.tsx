@@ -28,7 +28,7 @@ export default function DrivingChangeSection() {
             <Sun className="mx-auto h-8 w-8 text-muted/60" strokeWidth={1} />
             <SectionLabel>Driving Change</SectionLabel>
             <h2 className="mt-4 text-[1.75rem] font-normal leading-[1.35] tracking-tight sm:text-[2rem] lg:text-[2.5rem] lg:leading-[1.3] max-w-2xl mx-auto text-foreground">
-              At SolidRoutes, we are{" "}
+              At Experidium, we are{" "}
               <span className="text-primary italic">replacing</span>{" "}
               <span className="font-semibold">manual workflows</span> with
               agentic AI across{" "}

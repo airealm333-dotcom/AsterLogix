@@ -1,4 +1,4 @@
-# SolidRoutes
+# Experidium
 
 AI-powered supply chain automation agency website built with Next.js, Tailwind CSS, and Framer Motion.
 

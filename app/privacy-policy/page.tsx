@@ -2,7 +2,7 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import SectionLabel from "@/components/ui/SectionLabel";
 
 export const metadata = {
-  title: "Privacy Policy — SolidRoutes",
+  title: "Privacy Policy — Experidium",
   description: "Our commitment to protecting your privacy and data.",
 };
 

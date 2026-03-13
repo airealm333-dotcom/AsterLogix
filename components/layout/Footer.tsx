@@ -12,7 +12,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <Link href="/" className="mb-4 flex items-center gap-2 text-xl font-bold">
               <Brain className="h-6 w-6 text-primary" />
-              <span>SolidRoutes</span>
+              <span>Experidium</span>
             </Link>
             <p className="mb-6 text-sm text-white/60 leading-relaxed">
               We believe real transformation starts deep within the supply chain.
@@ -106,7 +106,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 border-t border-white/10 pt-8 text-center text-sm text-white/40">
-          <p>&copy; {new Date().getFullYear()} SolidRoutes. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Experidium. All rights reserved.</p>
         </div>
       </div>
     </footer>

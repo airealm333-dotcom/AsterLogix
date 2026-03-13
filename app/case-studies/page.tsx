@@ -7,7 +7,7 @@ import CTASection from "@/components/sections/CTASection";
 import { caseStudies } from "@/data/caseStudies";
 
 export const metadata = {
-  title: "Case Studies — SolidRoutes",
+  title: "Case Studies — Experidium",
   description: "Real results from AI agent deployments in mid-market supply chain companies.",
 };
 

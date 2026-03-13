@@ -8,7 +8,7 @@ import CTASection from "@/components/sections/CTASection";
 import { siteConfig } from "@/data/site";
 
 export const metadata = {
-  title: "Services — SolidRoutes",
+  title: "Services — Experidium",
   description: "AI agents and pricing for supply chain automation.",
 };
 

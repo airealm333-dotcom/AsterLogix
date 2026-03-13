@@ -15,7 +15,7 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
   return params.then(({ slug }) => {
     const post = blogPosts.find((p) => p.slug === slug);
     return {
-      title: post ? `${post.title} — SolidRoutes` : "Blog — SolidRoutes",
+      title: post ? `${post.title} — Experidium` : "Blog — Experidium",
       description: post?.excerpt ?? "",
     };
   });

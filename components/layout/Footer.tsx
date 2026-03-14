@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Brain, Twitter, Linkedin, Github } from "lucide-react";
+import { Twitter, Linkedin, Github } from "lucide-react";
 import { siteConfig } from "@/data/site";
 
 export default function Footer() {
@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
             <Link href="/" className="mb-4 flex items-center gap-2 text-xl font-bold">
-              <Brain className="h-6 w-6 text-primary" />
+              <span className="logo-icon" />
               <span>Experidium</span>
             </Link>
             <p className="mb-6 text-sm text-white/60 leading-relaxed">

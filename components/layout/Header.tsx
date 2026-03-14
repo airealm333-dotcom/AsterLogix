@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Brain } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { siteConfig } from "@/data/site";
 import Button from "@/components/ui/Button";
 
@@ -64,7 +64,7 @@ export default function Header() {
                   showDarkNav ? "text-foreground" : "text-white"
                 }`}
               >
-                <Brain className="h-6 w-6 text-primary" />
+                <span className="logo-icon" />
                 <span>Experidium</span>
               </Link>
             </div>
@@ -141,7 +141,7 @@ export default function Header() {
                     className="flex items-center gap-2 text-xl font-bold text-foreground"
                     onClick={() => setMobileOpen(false)}
                   >
-                    <Brain className="h-6 w-6 text-primary" />
+                    <span className="logo-icon" />
                     <span>Experidium</span>
                   </Link>
                   <button

@@ -62,3 +62,12 @@ h1, h2, h3, h4, h5, h6 {
 .animate-fade-up {
   animation: fade-up 0.6s ease-out both;
 }
+
+.logo-icon {
+  display: inline-block;
+  width: 3.75rem;
+  height: 3.75rem;
+  background-color: var(--color-primary);
+  -webkit-mask: url('/logos/experidium.png') no-repeat center / contain;
+  mask: url('/logos/experidium.png') no-repeat center / contain;
+}

@@ -34,7 +34,7 @@ export default function HeroSection() {
   }, [handleReady]);
 
   return (
-    <section className="relative h-[72vh] min-h-[420px] sm:min-h-[520px] bg-surface-dark">
+    <section className="relative h-[72vh] min-h-[420px] sm:min-h-[520px] lg:min-h-[600px] bg-surface-dark">
       {/* Video + overlays clipped to section bounds */}
       <div className="absolute inset-0 overflow-hidden">
         <video
@@ -58,16 +58,16 @@ export default function HeroSection() {
       </div>
 
       {/* Content — overflows below the section so the card can extend past */}
-      <div className="relative z-10 mx-auto flex h-full max-w-7xl items-end px-6 pt-24 pb-0">
-        <div className="grid w-full items-end gap-12 lg:grid-cols-2">
+      <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col px-6 pt-32 xl:pt-24 pb-0">
+        <div className="mt-auto grid w-full items-end gap-12 lg:grid-cols-2">
           {/* Hero text — pushed up a bit from the very bottom */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="pb-10 sm:pb-[4.5rem] lg:pb-20"
+            className="pb-10 sm:pb-[4.5rem] lg:pb-14 xl:pb-20"
           >
-            <h1 className="text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
+            <h1 className="text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl">
               AI agents that run your{" "}
               <span className="text-primary">supply chain</span> on autopilot
             </h1>
@@ -94,11 +94,11 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="hidden lg:flex justify-end mb-[-116px]"
+            className="hidden lg:flex justify-end xl:mb-[-116px]"
           >
             <Link
               href="/case-studies/distributor-cuts-forecast-error-by-57-percent"
-              className="block w-[392px] rounded-[20px] bg-white p-6 transition-all"
+              className="block w-[340px] xl:w-[392px] rounded-[20px] bg-white p-6 transition-all"
             >
               <p className="text-sm font-semibold leading-snug text-foreground">
                 Distributor cuts forecast error by 57%

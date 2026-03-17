@@ -8,7 +8,7 @@ import { siteConfig } from "@/data/site";
 
 export default function FleetSection() {
   return (
-    <section className="py-20 lg:py-28 bg-white">
+    <section className="py-20 lg:py-24 xl:py-28 bg-white">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <ScrollReveal>

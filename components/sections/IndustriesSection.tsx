@@ -21,7 +21,7 @@ export default function IndustriesSection() {
   const industry = siteConfig.industries[active];
 
   return (
-    <section className="py-20 lg:py-28 bg-surface">
+    <section className="py-20 lg:py-24 xl:py-28 bg-surface">
       <div className="mx-auto max-w-7xl px-6">
         <ScrollReveal>
           <div className="text-center">

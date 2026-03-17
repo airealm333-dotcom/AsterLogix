@@ -24,7 +24,7 @@ export default function ServicesSection() {
   const next = () => setPage((p) => (p + 1) % totalPages);
 
   return (
-    <section className="py-20 lg:py-28 bg-white">
+    <section className="py-20 lg:py-24 xl:py-28 bg-white">
       <div className="mx-auto max-w-7xl px-6">
         <ScrollReveal>
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">

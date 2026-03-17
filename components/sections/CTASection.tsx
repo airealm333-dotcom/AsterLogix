@@ -6,12 +6,12 @@ import AnimatedImage from "@/components/ui/AnimatedImage";
 
 export default function CTASection() {
   return (
-    <section className="py-20 lg:py-28 bg-surface-dark">
+    <section className="py-20 lg:py-24 xl:py-28 bg-surface-dark">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <ScrollReveal>
             <div>
-              <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-4xl xl:text-5xl">
                 Ready to put your supply chain on autopilot?
               </h2>
               <p className="mt-4 text-white/60 leading-relaxed">

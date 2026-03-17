@@ -8,7 +8,7 @@ export default function TestimonialsSection() {
   const testimonials = siteConfig.testimonials;
 
   return (
-    <section className="py-20 lg:py-28 bg-surface overflow-hidden">
+    <section className="py-20 lg:py-24 xl:py-28 bg-surface overflow-hidden">
       <div className="mx-auto max-w-7xl px-6">
         <ScrollReveal>
           <div className="text-center">

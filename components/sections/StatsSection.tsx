@@ -8,7 +8,7 @@ import { siteConfig } from "@/data/site";
 
 export default function StatsSection() {
   return (
-    <section className="py-20 lg:py-28 bg-surface-dark text-white">
+    <section className="py-20 lg:py-24 xl:py-28 bg-surface-dark text-white">
       <div className="mx-auto max-w-7xl px-6">
         <ScrollReveal>
           <div className="text-center">

@@ -15,7 +15,7 @@ export default function CTASection() {
                 Ready to put your supply chain on autopilot?
               </h2>
               <p className="mt-4 text-white/60 leading-relaxed">
-                Book a free 20-minute AI readiness assessment. We&apos;ll map
+                Book a free 30-minute AI readiness assessment. We&apos;ll map
                 your biggest supply chain pain points to the AI agents that
                 solve them — with real ROI estimates specific to your business.
               </p>

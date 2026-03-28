@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Twitter, Linkedin, Github } from "lucide-react";
 import { siteConfig } from "@/data/site";
+import NewsletterForm from "@/components/layout/NewsletterForm";
 
 export default function Footer() {
   return (
@@ -19,19 +20,7 @@ export default function Footer() {
             </p>
             <div className="flex flex-col gap-2">
               <span className="text-xs text-white/40 uppercase tracking-wider">Get supply chain AI insights.</span>
-              <form className="mt-2 flex flex-col sm:flex-row gap-2" onSubmit={(e) => e.preventDefault()}>
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="min-w-0 flex-1 rounded-full bg-card-dark px-4 py-2.5 text-sm text-white placeholder:text-white/40 outline-none border border-white/10 focus:border-primary"
-                />
-                <button
-                  type="submit"
-                  className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-primary-dark"
-                >
-                  Subscribe
-                </button>
-              </form>
+              <NewsletterForm />
             </div>
           </div>
 
@@ -81,7 +70,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href={`tel:${siteConfig.footer.phone}`}
+                  href={`tel:${siteConfig.footer.phone.replace(/\s/g, "")}`}
                   className="text-sm text-white/60 transition-colors hover:text-white"
                 >
                   {siteConfig.footer.phone}

@@ -5,10 +5,14 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import SectionLabel from "@/components/ui/SectionLabel";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import AnimatedImage from "@/components/ui/AnimatedImage";
-import { blogPosts } from "@/data/blogPosts";
+import type { BlogPostMeta } from "@/lib/blog";
 import useEmblaCarousel from "embla-carousel-react";
 
-export default function BlogPreview() {
+type Props = {
+  posts: BlogPostMeta[];
+};
+
+export default function BlogPreview({ posts }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: "start",
@@ -47,7 +51,7 @@ export default function BlogPreview() {
 
         <div className="mt-12 overflow-hidden" ref={emblaRef}>
           <div className="flex gap-6">
-            {blogPosts.map((post, i) => (
+            {posts.map((post, i) => (
               <div
                 key={post.slug}
                 className="min-w-0 flex-shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"

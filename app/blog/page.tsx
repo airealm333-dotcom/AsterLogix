@@ -1,16 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import SectionLabel from "@/components/ui/SectionLabel";
 import CTASection from "@/components/sections/CTASection";
-import { blogPosts } from "@/data/blogPosts";
+import { getAllPosts } from "@/lib/blog";
+
+export const revalidate = 120;
 
 export const metadata = {
   title: "Blog — Experidium",
-  description: "Insights on agentic AI, supply chain automation, and the future of operations.",
+  description:
+    "Insights on agentic AI, supply chain automation, and the future of operations.",
 };
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const blogPosts = await getAllPosts();
+
   return (
     <>
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-background">
@@ -32,53 +38,36 @@ export default function BlogPage() {
 
       <section className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-6">
-          {blogPosts[0] && (
-            <ScrollReveal>
-              <Link href={`/blog/${blogPosts[0].slug}`} className="group block">
-                <div className="grid items-center gap-8 lg:grid-cols-2">
-                  <div className="relative aspect-[16/10] overflow-hidden rounded-[20px]">
-                    <Image
-                      src={blogPosts[0].image}
-                      alt={blogPosts[0].title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-3 text-sm text-muted">
-                      <span className="rounded-full border border-border bg-white px-3 py-1 font-medium text-foreground text-xs">
-                        {blogPosts[0].category}
-                      </span>
-                      <span>{blogPosts[0].date}</span>
-                    </div>
-                    <h2 className="mt-4 text-2xl font-bold sm:text-3xl group-hover:text-primary transition-colors">
-                      {blogPosts[0].title}
-                    </h2>
-                    <p className="mt-3 text-muted leading-relaxed">{blogPosts[0].excerpt}</p>
-                  </div>
-                </div>
-              </Link>
-            </ScrollReveal>
-          )}
-
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {blogPosts.slice(1).map((post, i) => (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {blogPosts.map((post, i) => (
               <ScrollReveal key={post.slug} delay={i * 0.1}>
                 <Link href={`/blog/${post.slug}`} className="group block">
                   <div className="overflow-hidden rounded-[20px] border border-border transition-all hover:border-foreground/20">
                     <div className="relative aspect-[16/10]">
-                      <Image src={post.image} alt={post.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <Image
+                        src={post.image}
+                        alt={post.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
                     </div>
                     <div className="p-6">
-                      <div className="flex items-center gap-3 text-xs text-muted">
+                      <h3 className="text-lg font-bold group-hover:text-primary transition-colors">
+                        {post.title}
+                      </h3>
+                      <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted">
                         <span className="rounded-full border border-border bg-white px-3 py-1 font-medium text-foreground">
                           {post.category}
                         </span>
                         <span>{post.date}</span>
                       </div>
-                      <h3 className="mt-3 text-lg font-bold leading-snug group-hover:text-primary transition-colors">
-                        {post.title}
-                      </h3>
+                      <p className="mt-3 text-sm text-muted leading-relaxed line-clamp-2">
+                        {post.excerpt}
+                      </p>
+                      <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-foreground group-hover:gap-2 transition-all">
+                        Read article <ArrowRight className="h-4 w-4" />
+                      </span>
                     </div>
                   </div>
                 </Link>

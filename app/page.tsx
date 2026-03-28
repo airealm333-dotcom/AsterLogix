@@ -10,8 +10,11 @@ import CaseStudiesPreview from "@/components/sections/CaseStudiesPreview";
 import CTASection from "@/components/sections/CTASection";
 import BlogPreview from "@/components/sections/BlogPreview";
 import LogoMarquee from "@/components/sections/LogoMarquee";
+import { getAllPosts } from "@/lib/blog";
 
-export default function Home() {
+export default async function Home() {
+  const blogPosts = await getAllPosts();
+
   return (
     <>
       <HeroSection />
@@ -24,7 +27,7 @@ export default function Home() {
       <TestimonialsSection />
       <CaseStudiesPreview />
       <CTASection />
-      <BlogPreview />
+      <BlogPreview posts={blogPosts} />
       <LogoMarquee />
     </>
   );

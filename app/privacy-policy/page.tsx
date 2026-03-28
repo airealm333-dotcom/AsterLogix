@@ -41,7 +41,7 @@ const sections = [
   },
   {
     title: "Contact Us",
-    text: "If you have any questions about this Privacy Policy or our data practices, please contact us at hello@asterlogix.ai or call us at +123 456 7890.",
+    text: "If you have any questions about this Privacy Policy or our data practices, please contact us at contact@experidium.com or call us at +91 6238411405.",
   },
 ];
 

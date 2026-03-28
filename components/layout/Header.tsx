@@ -3,17 +3,76 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { siteConfig } from "@/data/site";
 import Button from "@/components/ui/Button";
+import SignOutButton from "@/components/dashboard/SignOutButton";
+import UserMenu from "@/components/layout/UserMenu";
+import CalendlyBookingModal from "@/components/booking/CalendlyBookingModal";
+import { createClient } from "@/lib/supabase/client";
 
-export default function Header() {
+const calendlyBookingUrl =
+  process.env.NEXT_PUBLIC_CALENDLY_URL?.trim() ||
+  siteConfig.bookingCalendlyUrl;
+
+type HeaderProps = {
+  /** From server `getSessionProfile()` so admin links work before client `profiles` fetch. */
+  initialIsAdmin?: boolean;
+};
+
+export default function Header({ initialIsAdmin = false }: HeaderProps) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const [authUser, setAuthUser] = useState<User | null | undefined>(undefined);
+  const [isAdmin, setIsAdmin] = useState(initialIsAdmin);
   const isHomePage = pathname === "/";
   const showDarkNav = scrolled || !isHomePage;
+
+  useEffect(() => {
+    let client: ReturnType<typeof createClient> | null = null;
+    try {
+      client = createClient();
+    } catch {
+      setAuthUser(null);
+      return;
+    }
+
+    async function syncRole(userId: string | null | undefined) {
+      if (!userId) {
+        setIsAdmin(false);
+        return;
+      }
+      // Direct profiles read only (RLS: own row). Avoid browser RPCs like ensure_my_profile —
+      // they can hang and block admin detection. Server getSessionProfile() heals profiles.
+      const { data, error } = await client!
+        .from("profiles")
+        .select("role")
+        .eq("id", userId)
+        .maybeSingle();
+      if (error && process.env.NODE_ENV === "development") {
+        console.warn("[Header] profiles role fetch:", error.message);
+      }
+      setIsAdmin(data?.role === "admin");
+    }
+
+    client.auth.getUser().then(async ({ data }) => {
+      setAuthUser(data.user ?? null);
+      await syncRole(data.user?.id);
+    });
+
+    const {
+      data: { subscription },
+    } = client.auth.onAuthStateChange(async (_event, session) => {
+      setAuthUser(session?.user ?? null);
+      await syncRole(session?.user?.id);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -93,22 +152,65 @@ export default function Header() {
               })}
             </ul>
 
-            <div className="hidden md:block">
+            <div className="hidden md:flex items-center gap-4 shrink-0">
+              {!authUser ? (
+                <Link
+                  href="/login"
+                  prefetch={false}
+                  className={`text-sm font-medium transition-colors duration-300 ${
+                    showDarkNav
+                      ? "text-muted hover:text-foreground"
+                      : "text-white/80 hover:text-white"
+                  }`}
+                >
+                  Log in
+                </Link>
+              ) : null}
+
               {showDarkNav ? (
-                <Button href="/contact" variant="primary">
-                  Book AI Assessment
+                <Button variant="primary" onClick={() => setBookingOpen(true)}>
+                  Book a 30-min call
                 </Button>
               ) : (
-                <Link
-                  href="/contact"
+                <button
+                  type="button"
+                  onClick={() => setBookingOpen(true)}
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-gray-200 px-7 py-3.5 text-sm font-semibold text-foreground transition-all duration-300 hover:bg-white active:bg-white"
                 >
-                  Book AI Assessment
+                  Book a 30-min call
+                </button>
+              )}
+
+              {authUser ? (
+                <UserMenu
+                  user={authUser}
+                  showDarkNav={showDarkNav}
+                  isAdmin={isAdmin}
+                  onNavigate={() => setMobileOpen(false)}
+                />
+              ) : null}
+            </div>
+
+            <div className="flex items-center gap-3 md:hidden shrink-0">
+              {authUser ? (
+                <UserMenu
+                  user={authUser}
+                  showDarkNav={showDarkNav}
+                  isAdmin={isAdmin}
+                  onNavigate={() => setMobileOpen(false)}
+                />
+              ) : (
+                <Link
+                  href="/login"
+                  prefetch={false}
+                  className={`text-sm font-medium ${
+                    showDarkNav ? "text-foreground" : "text-white"
+                  }`}
+                >
+                  Log in
                 </Link>
               )}
             </div>
-
-            <div className="md:hidden w-[44px]" />
           </nav>
         </div>
       </header>
@@ -170,14 +272,43 @@ export default function Header() {
                   ))}
                 </div>
 
-                <div className="px-4 pb-6 pt-2 border-t border-border">
+                <div className="px-4 pb-6 pt-2 border-t border-border space-y-2">
+                  {authUser ? (
+                    <>
+                      <SignOutButton
+                        className="w-full rounded-full border border-border bg-transparent px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-surface disabled:opacity-50"
+                        onAfterSignOut={() => setMobileOpen(false)}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        href="/login"
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        Log in
+                      </Button>
+                      <Button
+                        href="/signup"
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        Sign up
+                      </Button>
+                    </>
+                  )}
                   <Button
-                    href="/contact"
                     variant="primary"
                     className="w-full"
-                    onClick={() => setMobileOpen(false)}
+                    onClick={() => {
+                      setMobileOpen(false);
+                      setBookingOpen(true);
+                    }}
                   >
-                    Book AI Assessment
+                    Book a 30-min call
                   </Button>
                 </div>
               </div>
@@ -185,6 +316,12 @@ export default function Header() {
           </>
         )}
       </AnimatePresence>
+
+      <CalendlyBookingModal
+        open={bookingOpen}
+        onClose={() => setBookingOpen(false)}
+        calendlyUrl={calendlyBookingUrl}
+      />
     </>
   );
 }

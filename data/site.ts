@@ -3,6 +3,8 @@ export const siteConfig = {
   tagline: "AI-Powered Supply Chain Automation",
   description:
     "We build and deploy agentic AI systems that autonomously manage demand forecasting, procurement, disruption monitoring, and logistics — so your operations team stops fighting fires and starts running on autopilot.",
+  /** Default Calendly URL for “Book a call”. Override with `NEXT_PUBLIC_CALENDLY_URL`. */
+  bookingCalendlyUrl: "https://calendly.com/adithyan701264/30min",
   nav: [
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
@@ -21,11 +23,11 @@ export const siteConfig = {
       { label: "Privacy policy", href: "/privacy-policy" },
     ],
     addresses: [
-      "123 Remote Work Avenue, San Francisco, CA 94105",
-      "144 Creative Street, Suite 456, New York, NY 10001, USA",
+      "701 Congress Avenue, Suite 200, Austin, TX 78701, USA",
+      "Prestige Tech Park, Kadubeesanahalli, Outer Ring Road, Bengaluru, Karnataka 560087, India",
     ],
-    email: "hello@asterlogix.ai",
-    phone: "+123 456 7890",
+    email: "contact@experidium.com",
+    phone: "+91 6238411405",
   },
   stats: [
     { value: 40, suffix: "%", label: "Avg. forecast error reduction" },

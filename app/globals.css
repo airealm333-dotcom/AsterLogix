@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme inline {
   --color-background: #f9f9f9;
@@ -70,4 +71,9 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--color-primary);
   -webkit-mask: url('/logos/experidium.png') no-repeat center / contain;
   mask: url('/logos/experidium.png') no-repeat center / contain;
+}
+
+/* TipTap */
+.ProseMirror:focus {
+  outline: none;
 }

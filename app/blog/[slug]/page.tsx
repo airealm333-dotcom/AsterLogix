@@ -5,34 +5,45 @@ import { ArrowLeft, ArrowRight, Calendar, Tag } from "lucide-react";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import SectionLabel from "@/components/ui/SectionLabel";
 import CTASection from "@/components/sections/CTASection";
-import { blogPosts } from "@/data/blogPosts";
+import { getAllPosts, getPostBySlug } from "@/lib/blog";
+import { sanitizeBlogHtml } from "@/lib/sanitize-html";
 
-export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+export const revalidate = 120;
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
-export function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  return params.then(({ slug }) => {
-    const post = blogPosts.find((p) => p.slug === slug);
-    return {
-      title: post ? `${post.title} — Experidium` : "Blog — Experidium",
-      description: post?.excerpt ?? "",
-    };
-  });
-}
-
-export default async function BlogPostPage({
-  params,
-}: {
+export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;
-  const post = blogPosts.find((p) => p.slug === slug);
-  if (!post) notFound();
+  const { slug } = await props.params;
+  const result = await getPostBySlug(slug);
+  if (!result) {
+    return { title: "Blog — Experidium", description: "" };
+  }
+  return {
+    title: `${result.meta.title} — Experidium`,
+    description: result.meta.excerpt,
+  };
+}
 
+export default async function BlogPostPage(props: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await props.params;
+  const blogPosts = await getAllPosts();
+  const result = await getPostBySlug(slug);
+  if (!result) notFound();
+
+  const { meta: post, body } = result;
   const currentIndex = blogPosts.findIndex((p) => p.slug === slug);
-  const prev = blogPosts[currentIndex - 1];
-  const next = blogPosts[currentIndex + 1];
+  const prev = currentIndex > 0 ? blogPosts[currentIndex - 1] : undefined;
+  const next =
+    currentIndex >= 0 && currentIndex < blogPosts.length - 1
+      ? blogPosts[currentIndex + 1]
+      : undefined;
 
   return (
     <>
@@ -65,36 +76,28 @@ export default async function BlogPostPage({
         <div className="mx-auto max-w-4xl px-6">
           <ScrollReveal>
             <div className="relative aspect-[16/9] overflow-hidden rounded-[20px] mb-12">
-              <Image src={post.image} alt={post.title} fill className="object-cover" />
+              <Image
+                src={post.image}
+                alt={post.title}
+                fill
+                className="object-cover"
+              />
             </div>
           </ScrollReveal>
 
           <ScrollReveal>
-            <div className="prose prose-lg max-w-none">
-              {post.content.split("\n\n").map((paragraph, i) => {
-                if (paragraph.startsWith("**") && paragraph.endsWith("**")) {
-                  return (
-                    <h3 key={i} className="text-xl font-bold mt-8 mb-3">
-                      {paragraph.replace(/\*\*/g, "")}
-                    </h3>
-                  );
-                }
-                if (paragraph.startsWith("**")) {
-                  const parts = paragraph.split("**");
-                  return (
-                    <div key={i} className="mb-6">
-                      <h3 className="text-xl font-bold mt-8 mb-3">{parts[1]}</h3>
-                      <p className="text-muted leading-relaxed">{parts[2]}</p>
-                    </div>
-                  );
-                }
-                return (
-                  <p key={i} className="text-muted leading-relaxed mb-6">
-                    {paragraph}
-                  </p>
-                );
-              })}
-            </div>
+            {body.format === "html" ? (
+              <article
+                className="prose prose-lg max-w-none prose-headings:scroll-mt-28 prose-headings:font-bold prose-headings:text-foreground prose-p:text-muted prose-p:leading-relaxed prose-li:text-muted prose-strong:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
+                dangerouslySetInnerHTML={{
+                  __html: sanitizeBlogHtml(body.html),
+                }}
+              />
+            ) : (
+              <article className="prose prose-lg max-w-none prose-headings:scroll-mt-28 prose-headings:font-bold prose-headings:text-foreground prose-p:text-muted prose-p:leading-relaxed prose-li:text-muted prose-strong:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline">
+                {body.node}
+              </article>
+            )}
           </ScrollReveal>
 
           <div className="mt-16 flex items-center justify-between border-t border-border pt-8">

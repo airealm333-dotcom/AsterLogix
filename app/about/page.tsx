@@ -34,13 +34,6 @@ const values = [
   },
 ];
 
-const team = [
-  { name: "Sarah Chen", role: "CEO & Co-Founder", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" },
-  { name: "Marcus Rivera", role: "CTO & Head of AI", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" },
-  { name: "Priya Sharma", role: "Head of AI Engineering", img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80" },
-  { name: "James Okafor", role: "VP of Client Success", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" },
-];
-
 export default function AboutPage() {
   return (
     <>
@@ -95,35 +88,6 @@ export default function AboutPage() {
                   </div>
                   <h3 className="mt-5 text-lg font-bold">{v.title}</h3>
                   <p className="mt-2 text-sm text-muted leading-relaxed">{v.text}</p>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 lg:py-28 bg-surface">
-        <div className="mx-auto max-w-7xl px-6">
-          <ScrollReveal>
-            <div className="text-center">
-              <SectionLabel>Our Team</SectionLabel>
-              <h2 className="mt-4 text-3xl font-bold sm:text-4xl">Meet the people behind the agents</h2>
-            </div>
-          </ScrollReveal>
-          <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {team.map((member, i) => (
-              <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="group text-center">
-                  <div className="relative mx-auto h-48 w-48 overflow-hidden rounded-[20px]">
-                    <AnimatedImage
-                      src={member.img}
-                      alt={member.name}
-                      effect="zoom-in"
-                      className="transition-transform duration-500 group-hover:scale-110"
-                    />
-                  </div>
-                  <h3 className="mt-4 text-lg font-bold">{member.name}</h3>
-                  <p className="text-sm text-muted">{member.role}</p>
                 </div>
               </ScrollReveal>
             ))}

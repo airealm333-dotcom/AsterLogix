@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { isAdmin } from "@/lib/auth/roles";
 import { getSessionProfile } from "@/lib/auth/session";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const instrumentSans = Instrument_Sans({
@@ -50,6 +51,7 @@ export default async function RootLayout({
         <Header initialIsAdmin={initialIsAdmin} />
         <main className="min-h-screen">{children}</main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );

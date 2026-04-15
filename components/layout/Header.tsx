@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -123,7 +124,14 @@ export default function Header({ initialIsAdmin = false }: HeaderProps) {
                   showDarkNav ? "text-foreground" : "text-white"
                 }`}
               >
-                <span className="logo-icon" />
+                <Image
+                  src="/logos/header-logo.png"
+                  alt=""
+                  width={60}
+                  height={60}
+                  className="logo-icon shrink-0"
+                  priority
+                />
                 <span>Experidium</span>
               </Link>
             </div>
@@ -243,7 +251,13 @@ export default function Header({ initialIsAdmin = false }: HeaderProps) {
                     className="flex items-center gap-2 text-xl font-bold text-foreground"
                     onClick={() => setMobileOpen(false)}
                   >
-                    <span className="logo-icon" />
+                    <Image
+                      src="/logos/header-logo.png"
+                      alt=""
+                      width={60}
+                      height={60}
+                      className="logo-icon shrink-0"
+                    />
                     <span>Experidium</span>
                   </Link>
                   <button

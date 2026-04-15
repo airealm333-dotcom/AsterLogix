@@ -43,6 +43,12 @@ export default async function RootLayout({
       <head>
         <link rel="preload" href="/hero.mp4" as="video" type="video/mp4" />
         <link rel="preload" href="/hero-poster.jpg" as="image" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "document.querySelectorAll('[data-cursor-element-id]').forEach((el)=>el.removeAttribute('data-cursor-element-id'));",
+          }}
+        />
       </head>
       <body
         className={`${instrumentSans.variable} ${inter.variable} antialiased`}

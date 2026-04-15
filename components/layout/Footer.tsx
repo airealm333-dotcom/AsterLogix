@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Twitter, Linkedin, Github } from "lucide-react";
 import { siteConfig } from "@/data/site";
@@ -12,7 +13,13 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
             <Link href="/" className="mb-4 flex items-center gap-2 text-xl font-bold">
-              <span className="logo-icon" />
+              <Image
+                src="/logos/experidium-logo.png"
+                alt=""
+                width={60}
+                height={60}
+                className="logo-icon shrink-0"
+              />
               <span>Experidium</span>
             </Link>
             <p className="mb-6 text-sm text-white/60 leading-relaxed">

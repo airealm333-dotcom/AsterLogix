@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
 import { createClient } from "@/lib/supabase/server";
-import WriteBlogForm from "@/components/blog/WriteBlogForm";
+import WriteBlogForm, {
+  type BlogPostForEdit,
+} from "@/components/blog/WriteBlogForm";
 import AdminDashboardTabs from "@/components/dashboard/AdminDashboardTabs";
 import AdminOverviewMetrics from "@/components/dashboard/AdminOverviewMetrics";
 import {
@@ -124,6 +126,31 @@ export default async function CreateNewsletterPage(props: {
     published: Boolean(r.published),
   }));
 
+  const editSlugParam = searchParamFirst(sp.edit)?.trim() ?? null;
+  let initialPostForEdit: BlogPostForEdit | null = null;
+  let editNotFound = false;
+
+  if (editSlugParam) {
+    const { data: editRow } = await supabase
+      .from("blog_posts")
+      .select("slug, title, category, excerpt, image_url, body_html")
+      .eq("slug", editSlugParam)
+      .maybeSingle();
+
+    if (editRow) {
+      initialPostForEdit = {
+        slug: String(editRow.slug),
+        title: String(editRow.title ?? ""),
+        category: String(editRow.category ?? ""),
+        excerpt: String(editRow.excerpt ?? ""),
+        image_url: String(editRow.image_url ?? ""),
+        body_html: String(editRow.body_html ?? ""),
+      };
+    } else {
+      editNotFound = true;
+    }
+  }
+
   const panels: Record<AdminDashboardTabId, ReactNode> = {
     newsletter: (
       <section aria-labelledby="dash-heading-newsletter">
@@ -147,7 +174,12 @@ export default async function CreateNewsletterPage(props: {
           Publish blog post
         </h2>
         <div className="mt-3">
-          <WriteBlogForm dbPosts={dbPostsForAdmin} />
+          <WriteBlogForm
+            key={editSlugParam ?? "new-blog-form"}
+            dbPosts={dbPostsForAdmin}
+            initialPostForEdit={initialPostForEdit}
+            editNotFound={editNotFound}
+          />
         </div>
       </section>
     ),

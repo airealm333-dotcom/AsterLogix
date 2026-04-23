@@ -69,6 +69,9 @@ export default function AdminDashboardTabs({
       if (tab !== "subscribers") {
         next.delete("page");
       }
+      if (tab !== "blog") {
+        next.delete("edit");
+      }
       const q = next.toString();
       router.replace(q ? `${pathname}?${q}` : pathname, { scroll: false });
     },

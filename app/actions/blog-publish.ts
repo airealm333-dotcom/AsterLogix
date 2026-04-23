@@ -178,3 +178,209 @@ export async function publishBlogPost(
     issues: [],
   };
 }
+
+async function requireAdminSupabase() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { supabase, user: null, profile: null };
+  }
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  return { supabase, user, profile };
+}
+
+export async function updateBlogPost(
+  _prev: { ok: boolean; message: string; issues?: string[] },
+  formData: FormData
+): Promise<{ ok: boolean; message: string; issues?: string[] }> {
+  const rawOriginal = formData.get("original_slug");
+  const originalSlug =
+    typeof rawOriginal === "string" ? rawOriginal.trim() : "";
+  if (!originalSlug) {
+    return {
+      ok: false,
+      message: "Missing post to update.",
+      issues: [],
+    };
+  }
+
+  const rawSlug = formData.get("slug");
+  const parsed = publishSchema.safeParse({
+    title: formData.get("title"),
+    category: formData.get("category"),
+    excerpt: formData.get("excerpt"),
+    image_url: formData.get("image_url"),
+    body_html: formData.get("body_html"),
+    slug:
+      typeof rawSlug === "string" && rawSlug.trim()
+        ? rawSlug.trim()
+        : undefined,
+  });
+
+  if (!parsed.success) {
+    const issues = parsed.error.issues.map((i) => i.message);
+    return {
+      ok: false,
+      message: issues[0] ?? "Invalid input",
+      issues,
+    };
+  }
+
+  const { supabase, user, profile } = await requireAdminSupabase();
+  if (!user) return { ok: false, message: "Sign in required.", issues: [] };
+
+  if (!isAdmin(profile?.role)) {
+    return {
+      ok: false,
+      message: "You don’t have permission to update posts.",
+      issues: [],
+    };
+  }
+
+  const newSlug =
+    parsed.data.slug && parsed.data.slug.length > 0
+      ? slugifyTitle(parsed.data.slug)
+      : slugifyTitle(parsed.data.title);
+
+  if (!newSlug) {
+    return {
+      ok: false,
+      message: "Could not derive a URL slug from the title.",
+      issues: [],
+    };
+  }
+
+  const { data: existing, error: fetchErr } = await supabase
+    .from("blog_posts")
+    .select("id, slug, published_at, date_display")
+    .eq("slug", originalSlug)
+    .maybeSingle();
+
+  if (fetchErr) {
+    console.error(fetchErr);
+    return {
+      ok: false,
+      message: "Could not load the post to update.",
+      issues: [],
+    };
+  }
+
+  if (!existing) {
+    return {
+      ok: false,
+      message: "That post no longer exists or you can’t edit it.",
+      issues: [],
+    };
+  }
+
+  if (newSlug !== originalSlug) {
+    const { data: conflict } = await supabase
+      .from("blog_posts")
+      .select("id")
+      .eq("slug", newSlug)
+      .maybeSingle();
+
+    if (conflict && conflict.id !== existing.id) {
+      return {
+        ok: false,
+        message: "That slug is already in use. Change the title or slug.",
+        issues: [],
+      };
+    }
+  }
+
+  const imageUrl = parsed.data.image_url;
+
+  const { error } = await supabase
+    .from("blog_posts")
+    .update({
+      slug: newSlug,
+      title: parsed.data.title,
+      category: parsed.data.category,
+      excerpt: parsed.data.excerpt,
+      image_url: imageUrl,
+      body_html: parsed.data.body_html,
+      published_at: existing.published_at,
+      date_display: existing.date_display,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", existing.id);
+
+  if (error) {
+    console.error(error);
+    const hint =
+      error.code === "42501" || /permission denied|rls/i.test(error.message)
+        ? " Database blocked the update. Check admin UPDATE policy on blog_posts."
+        : "";
+    return {
+      ok: false,
+      message:
+        (error.message.includes("blog_posts")
+          ? error.message
+          : "Could not save changes.") + hint,
+      issues: [],
+    };
+  }
+
+  revalidatePath("/blog");
+  revalidatePath(`/blog/${originalSlug}`);
+  if (newSlug !== originalSlug) {
+    revalidatePath(`/blog/${newSlug}`);
+  }
+  revalidatePath("/");
+  revalidatePath("/create/newsletter");
+
+  return {
+    ok: true,
+    message: `Saved — open /blog/${newSlug}`,
+    issues: [],
+  };
+}
+
+export async function deleteBlogPost(
+  slug: string
+): Promise<{ ok: boolean; message: string }> {
+  const trimmed = slug.trim();
+  if (!trimmed) {
+    return { ok: false, message: "Missing slug." };
+  }
+
+  const { supabase, user, profile } = await requireAdminSupabase();
+  if (!user) return { ok: false, message: "Sign in required." };
+
+  if (!isAdmin(profile?.role)) {
+    return { ok: false, message: "You don’t have permission to delete posts." };
+  }
+
+  const { error } = await supabase.from("blog_posts").delete().eq("slug", trimmed);
+
+  if (error) {
+    console.error(error);
+    const hint =
+      error.code === "42501" || /permission denied|rls/i.test(error.message)
+        ? " Database blocked the delete. Check admin DELETE policy on blog_posts."
+        : "";
+    return {
+      ok: false,
+      message:
+        (error.message.includes("blog_posts")
+          ? error.message
+          : "Could not delete the post.") + hint,
+    };
+  }
+
+  revalidatePath("/blog");
+  revalidatePath(`/blog/${trimmed}`);
+  revalidatePath("/");
+  revalidatePath("/create/newsletter");
+
+  return { ok: true, message: "Post deleted." };
+}

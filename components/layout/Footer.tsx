@@ -6,7 +6,11 @@ import { Twitter, Linkedin, Github } from "lucide-react";
 import { siteConfig } from "@/data/site";
 import NewsletterForm from "@/components/layout/NewsletterForm";
 
-export default function Footer() {
+export default function Footer({
+  copyrightYear,
+}: {
+  copyrightYear: number;
+}) {
   return (
     <footer className="bg-surface-dark text-white">
       <div className="mx-auto max-w-7xl px-6 py-16">
@@ -102,7 +106,9 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 border-t border-white/10 pt-8 text-center text-sm text-white/40">
-          <p>&copy; {new Date().getFullYear()} Experidium. All rights reserved.</p>
+          <p>
+            &copy; {copyrightYear} Experidium. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

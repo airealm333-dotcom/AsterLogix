@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { publishBlogPost } from "@/app/actions/blog-publish";
+import { publishBlogPost, updateBlogPost } from "@/app/actions/blog-publish";
 import Button from "@/components/ui/Button";
 import AdminBlogPostsList, {
   type AdminBlogPostRow,
@@ -18,32 +18,98 @@ const inputClass =
 const cardClass =
   "rounded-xl border border-border/80 bg-white p-5 shadow-sm sm:p-6";
 
+export type BlogPostForEdit = {
+  slug: string;
+  title: string;
+  category: string;
+  excerpt: string;
+  image_url: string;
+  body_html: string;
+};
+
 export default function WriteBlogForm({
   dbPosts = [],
+  initialPostForEdit = null,
+  editNotFound = false,
 }: {
   dbPosts?: AdminBlogPostRow[];
+  initialPostForEdit?: BlogPostForEdit | null;
+  editNotFound?: boolean;
 }) {
   const router = useRouter();
-  const [html, setHtml] = useState("<p></p>");
-  const [coverUrl, setCoverUrl] = useState("");
+  const isEditing = Boolean(initialPostForEdit);
+
+  const [html, setHtml] = useState(
+    () => initialPostForEdit?.body_html ?? "<p></p>"
+  );
+  const [coverUrl, setCoverUrl] = useState(
+    () => initialPostForEdit?.image_url ?? ""
+  );
   const [editorKey, setEditorKey] = useState(0);
-  const [state, formAction, pending] = useActionState(publishBlogPost, initial);
-  const lastSuccessMsg = useRef("");
+
+  const [publishState, publishAction, publishPending] = useActionState(
+    publishBlogPost,
+    initial
+  );
+  const [updateState, updateAction, updatePending] = useActionState(
+    updateBlogPost,
+    initial
+  );
+
+  const formAction = isEditing ? updateAction : publishAction;
+  const pending = isEditing ? updatePending : publishPending;
+  const state = isEditing ? updateState : publishState;
+
+  const lastPublishSuccess = useRef("");
+  const lastUpdateSuccess = useRef("");
 
   useEffect(() => {
-    if (!state.ok || !state.message) return;
-    if (lastSuccessMsg.current === state.message) return;
-    lastSuccessMsg.current = state.message;
-    setHtml("<p></p>");
-    setCoverUrl("");
-    setEditorKey((k) => k + 1);
+    if (!isEditing) {
+      if (!publishState.ok || !publishState.message) return;
+      if (lastPublishSuccess.current === publishState.message) return;
+      lastPublishSuccess.current = publishState.message;
+      setHtml("<p></p>");
+      setCoverUrl("");
+      setEditorKey((k) => k + 1);
+      router.refresh();
+      return;
+    }
+
+    if (!updateState.ok || !updateState.message) return;
+    if (lastUpdateSuccess.current === updateState.message) return;
+    lastUpdateSuccess.current = updateState.message;
+    router.replace("/create/newsletter?tab=blog");
     router.refresh();
-  }, [state.ok, state.message, router]);
+  }, [isEditing, publishState.ok, publishState.message, updateState.ok, updateState.message, router]);
+
+  const cancelEdit = () => {
+    router.replace("/create/newsletter?tab=blog");
+  };
 
   return (
     <div className="mt-4 w-full space-y-8 px-3 sm:px-6 lg:px-10">
+      {editNotFound ? (
+        <div
+          className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950"
+          role="alert"
+        >
+          <p className="font-medium">No post matches this edit link.</p>
+          <p className="mt-1 text-xs text-amber-900/90">
+            It may have been deleted, or the URL is wrong. You can still compose a
+            new post below.
+          </p>
+        </div>
+      ) : null}
+
       <form action={formAction} className="space-y-6">
         <input type="hidden" name="body_html" value={html} />
+        {isEditing && initialPostForEdit ? (
+          <input
+            type="hidden"
+            name="original_slug"
+            value={initialPostForEdit.slug}
+          />
+        ) : null}
 
         <div className={cardClass}>
           <h3 className="text-xs font-bold uppercase tracking-wide text-foreground">
@@ -74,6 +140,8 @@ export default function WriteBlogForm({
                 minLength={3}
                 className={`${inputClass} mt-1.5`}
                 placeholder="Clear, specific headline"
+                defaultValue={initialPostForEdit?.title ?? ""}
+                key={`title-${initialPostForEdit?.slug ?? "new"}`}
               />
             </div>
             <div>
@@ -86,6 +154,8 @@ export default function WriteBlogForm({
                 name="slug"
                 className={`${inputClass} mt-1.5 font-mono text-xs`}
                 placeholder="auto-from-title"
+                defaultValue={initialPostForEdit?.slug ?? ""}
+                key={`slug-${initialPostForEdit?.slug ?? "new"}`}
               />
             </div>
             <div>
@@ -99,6 +169,8 @@ export default function WriteBlogForm({
                 minLength={2}
                 className={`${inputClass} mt-1.5`}
                 placeholder="e.g. Product, Company, Engineering"
+                defaultValue={initialPostForEdit?.category ?? ""}
+                key={`cat-${initialPostForEdit?.slug ?? "new"}`}
               />
             </div>
             <div className="sm:col-span-2">
@@ -114,6 +186,8 @@ export default function WriteBlogForm({
                 rows={4}
                 className={`${inputClass} mt-1.5 min-h-[5rem] resize-y`}
                 placeholder="One or two sentences: what the reader will learn."
+                defaultValue={initialPostForEdit?.excerpt ?? ""}
+                key={`ex-${initialPostForEdit?.slug ?? "new"}`}
               />
             </div>
           </div>
@@ -160,15 +234,43 @@ export default function WriteBlogForm({
 
         <div className="flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[11px] text-muted">
-            Publishes immediately to <strong>/blog</strong> and this list below.
+            {isEditing ? (
+              <>
+                Changes apply to <strong>/blog</strong> and the list below.
+              </>
+            ) : (
+              <>
+                Publishes immediately to <strong>/blog</strong> and this list
+                below.
+              </>
+            )}
           </p>
-          <Button
-            type="submit"
-            disabled={pending}
-            className="shrink-0 sm:min-w-[180px]"
-          >
-            {pending ? "Publishing…" : "Publish live"}
-          </Button>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            {isEditing ? (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={cancelEdit}
+                disabled={pending}
+                className="shrink-0 sm:min-w-[120px]"
+              >
+                Cancel editing
+              </Button>
+            ) : null}
+            <Button
+              type="submit"
+              disabled={pending}
+              className="shrink-0 sm:min-w-[180px]"
+            >
+              {pending
+                ? isEditing
+                  ? "Saving…"
+                  : "Publishing…"
+                : isEditing
+                  ? "Save changes"
+                  : "Publish live"}
+            </Button>
+          </div>
         </div>
       </form>
 

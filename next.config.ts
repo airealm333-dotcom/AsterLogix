@@ -14,7 +14,8 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "*.supabase.co",
+        // Match `<project-ref>.supabase.co` (single `*` can fail in some Next versions)
+        hostname: "**.supabase.co",
         pathname: "/storage/v1/object/public/**",
       },
     ],

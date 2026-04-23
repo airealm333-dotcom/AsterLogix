@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
-import { LayoutList, Table2, X } from "lucide-react";
+import { LayoutList, Pencil, Table2, X } from "lucide-react";
+import AdminBlogPostDeleteButton from "@/components/blog/AdminBlogPostDeleteButton";
 import SubscriberTagsRow from "@/components/dashboard/SubscriberTagsRow";
 import SubscribersTablePanel, {
   type SubscriberRow,
@@ -251,6 +252,9 @@ export default function AdminOverviewMetrics({
                       <th className="border border-border px-3 py-2">
                         Link
                       </th>
+                      <th className="border border-border px-3 py-2">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -276,6 +280,20 @@ export default function AdminOverviewMetrics({
                             View
                           </Link>
                         </td>
+                        <td className="border border-border px-3 py-2 align-top">
+                          <div className="flex min-w-[7rem] flex-wrap items-center gap-x-3 gap-y-1">
+                            <Link
+                              href={`/create/newsletter?tab=blog&edit=${encodeURIComponent(b.slug)}`}
+                              className="inline-flex items-center justify-center rounded-md p-1 text-primary transition-colors hover:bg-primary/10"
+                              aria-label={`Edit ${b.title}`}
+                              title="Edit post"
+                            >
+                              <Pencil className="h-3 w-3 shrink-0" aria-hidden />
+                              <span className="sr-only">Edit</span>
+                            </Link>
+                            <AdminBlogPostDeleteButton slug={b.slug} />
+                          </div>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -294,12 +312,24 @@ export default function AdminOverviewMetrics({
                     <p className="mt-1 text-xs text-muted">
                       {b.category} · {b.publishedAt}
                     </p>
-                    <Link
-                      href={`/blog/${b.slug}`}
-                      className="mt-2 inline-block text-xs font-semibold text-primary hover:underline"
-                    >
-                      Open post
-                    </Link>
+                    <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2">
+                      <Link
+                        href={`/blog/${b.slug}`}
+                        className="inline-block text-xs font-semibold text-primary hover:underline"
+                      >
+                        Open post
+                      </Link>
+                      <Link
+                        href={`/create/newsletter?tab=blog&edit=${encodeURIComponent(b.slug)}`}
+                        className="inline-flex items-center justify-center rounded-md p-1 text-primary transition-colors hover:bg-primary/10"
+                        aria-label={`Edit ${b.title}`}
+                        title="Edit post"
+                      >
+                        <Pencil className="h-3 w-3 shrink-0" aria-hidden />
+                        <span className="sr-only">Edit in dashboard</span>
+                      </Link>
+                      <AdminBlogPostDeleteButton slug={b.slug} />
+                    </div>
                   </li>
                 ))}
               </ul>

@@ -43,30 +43,35 @@ export default function BlogCoverUpload({
         let blob: Blob;
         let contentType: string;
         let filenameSuffix: string;
-        try {
-          const prep = await prepareBlogCoverForUpload(file);
-          blob = prep.blob;
-          contentType = prep.contentType;
-          filenameSuffix = prep.filenameSuffix;
-        } catch {
-          if (file.size > MAX_UPLOAD_BYTES) {
+
+        const originalSuffix =
+          file.name.match(/\.[a-z0-9]+$/i)?.[0] ||
+          (file.type === "image/png"
+            ? ".png"
+            : file.type === "image/webp"
+              ? ".webp"
+              : file.type === "image/gif"
+                ? ".gif"
+                : ".jpg");
+
+        if (file.size <= MAX_UPLOAD_BYTES) {
+          /** Original bytes — no resize/re-encode when already within API limit. */
+          blob = file;
+          contentType = file.type || "application/octet-stream";
+          filenameSuffix = originalSuffix;
+        } else {
+          try {
+            const prep = await prepareBlogCoverForUpload(file);
+            blob = prep.blob;
+            contentType = prep.contentType;
+            filenameSuffix = prep.filenameSuffix;
+          } catch {
             setError(
               "Could not process this image and the file is over 8 MB. Try another format or a smaller file."
             );
             setPhase("idle");
             return;
           }
-          blob = file;
-          contentType = file.type || "application/octet-stream";
-          filenameSuffix =
-            file.name.match(/\.[a-z0-9]+$/i)?.[0] ||
-            (file.type === "image/png"
-              ? ".png"
-              : file.type === "image/webp"
-                ? ".webp"
-                : file.type === "image/gif"
-                  ? ".gif"
-                  : ".jpg");
         }
 
         if (blob.size > MAX_UPLOAD_BYTES) {
@@ -118,16 +123,16 @@ export default function BlogCoverUpload({
   return (
     <div className="space-y-3">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
-        <div className="relative h-36 w-full max-w-md overflow-hidden rounded-xl border border-border bg-surface shadow-inner sm:h-40">
+        <div className="flex w-full max-w-md items-center justify-center overflow-hidden rounded-xl border border-border bg-surface shadow-inner">
           {value.trim() ? (
             // eslint-disable-next-line @next/next/no-img-element -- arbitrary admin preview URLs
             <img
               src={value}
               alt="Cover preview"
-              className="h-full w-full object-cover"
+              className="max-h-[min(70vh,560px)] w-auto max-w-full object-contain"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-muted">
+            <div className="flex min-h-[9rem] w-full items-center justify-center text-muted">
               <ImageIcon className="h-10 w-10 opacity-40" aria-hidden />
             </div>
           )}

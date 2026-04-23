@@ -30,6 +30,27 @@ export const metadata: Metadata = {
   },
 };
 
+/** Strips Cursor IDE `data-cursor-element-id` before React hydrates (injected into the DOM and causes mismatches). */
+const stripCursorElementIdsScript = `
+(function(){
+  function strip(){
+    try{
+      document.querySelectorAll("[data-cursor-element-id]").forEach(function(el){
+        el.removeAttribute("data-cursor-element-id");
+      });
+    }catch(e){}
+  }
+  strip();
+  if(typeof MutationObserver!=="undefined")return;
+  new MutationObserver(strip).observe(document.documentElement,{
+    subtree:true,
+    childList:true,
+    attributes:true,
+    attributeFilter:["data-cursor-element-id"]
+  });
+})();
+`.trim();
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -37,26 +58,24 @@ export default async function RootLayout({
 }>) {
   const session = await getSessionProfile();
   const initialIsAdmin = session ? isAdmin(session.profile.role) : false;
+  const copyrightYear = new Date().getUTCFullYear();
 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preload" href="/hero.mp4" as="video" type="video/mp4" />
         <link rel="preload" href="/hero-poster.jpg" as="image" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "document.querySelectorAll('[data-cursor-element-id]').forEach((el)=>el.removeAttribute('data-cursor-element-id'));",
-          }}
-        />
       </head>
       <body
         className={`${instrumentSans.variable} ${inter.variable} antialiased`}
         suppressHydrationWarning
       >
+        <script
+          dangerouslySetInnerHTML={{ __html: stripCursorElementIdsScript }}
+        />
         <Header initialIsAdmin={initialIsAdmin} />
         <main className="min-h-screen">{children}</main>
-        <Footer />
+        <Footer copyrightYear={copyrightYear} />
         <Analytics />
       </body>
     </html>

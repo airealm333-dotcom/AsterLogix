@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Pencil } from "lucide-react";
+import AdminBlogPostDeleteButton from "@/components/blog/AdminBlogPostDeleteButton";
 
 export type AdminBlogPostRow = {
   slug: string;
@@ -28,7 +29,7 @@ export default function AdminBlogPostsList({
 
   return (
     <div className="overflow-x-auto rounded-xl border border-border">
-      <table className="w-full min-w-[520px] border-collapse text-sm">
+      <table className="w-full min-w-[640px] border-collapse text-sm">
         <thead>
           <tr className="border-b-2 border-border bg-surface/70 text-left text-xs font-semibold uppercase tracking-wide text-muted">
             <th className="border border-border px-3 py-2.5">Title</th>
@@ -36,6 +37,7 @@ export default function AdminBlogPostsList({
             <th className="border border-border px-3 py-2.5">Published</th>
             <th className="border border-border px-3 py-2.5">Status</th>
             <th className="border border-border px-3 py-2.5">Open</th>
+            <th className="border border-border px-3 py-2.5">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -78,6 +80,20 @@ export default function AdminBlogPostsList({
                 ) : (
                   <span className="text-xs text-muted">—</span>
                 )}
+              </td>
+              <td className="border border-border px-3 py-2.5 align-top">
+                <div className="flex min-w-[7rem] flex-wrap items-center gap-x-3 gap-y-1">
+                  <Link
+                    href={`/create/newsletter?tab=blog&edit=${encodeURIComponent(p.slug)}`}
+                    className="inline-flex items-center justify-center rounded-md p-1 text-primary transition-colors hover:bg-primary/10"
+                    aria-label={`Edit ${p.title}`}
+                    title="Edit post"
+                  >
+                    <Pencil className="h-3 w-3 shrink-0" aria-hidden />
+                    <span className="sr-only">Edit</span>
+                  </Link>
+                  <AdminBlogPostDeleteButton slug={p.slug} />
+                </div>
               </td>
             </tr>
           ))}

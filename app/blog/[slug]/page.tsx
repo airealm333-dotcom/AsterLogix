@@ -80,6 +80,8 @@ export default async function BlogPostPage(props: {
                 src={post.image}
                 alt={post.title}
                 fill
+                priority
+                sizes="(max-width: 896px) 100vw, 896px"
                 className="object-cover"
               />
             </div>

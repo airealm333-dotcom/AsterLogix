@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseAdminIfConfigured } from "@/lib/supabase/admin";
 import { displayNameFromAuthUser } from "@/lib/auth/display-name";
@@ -140,10 +141,10 @@ async function ensureProfileViaServiceRole(
   };
 }
 
-export async function getSessionProfile(): Promise<{
+export const getSessionProfile = cache(async (): Promise<{
   user: { id: string; email?: string; displayName: string };
   profile: Profile;
-} | null> {
+} | null> => {
   const supabase = await createClient();
   const {
     data: { user },
@@ -274,7 +275,7 @@ export async function getSessionProfile(): Promise<{
     };
   }
   return null;
-}
+});
 
 export async function requireSessionProfile(): Promise<{
   user: { id: string; email?: string; displayName: string };

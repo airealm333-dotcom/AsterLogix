@@ -75,14 +75,14 @@ export default async function BlogPostPage(props: {
       <section className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-4xl px-6">
           <ScrollReveal>
-            <div className="relative aspect-[16/9] overflow-hidden rounded-[20px] mb-12">
+            <div className="relative aspect-[16/9] overflow-hidden rounded-[20px] mb-12 bg-surface">
               <Image
                 src={post.image}
                 alt={post.title}
                 fill
                 priority
                 sizes="(max-width: 896px) 100vw, 896px"
-                className="object-cover"
+                className="object-contain"
               />
             </div>
           </ScrollReveal>

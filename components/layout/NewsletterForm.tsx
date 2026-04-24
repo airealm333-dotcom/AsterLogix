@@ -1,12 +1,21 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
+import { track } from "@vercel/analytics/react";
 import { subscribe, type SubscribeState } from "@/app/actions/subscribe";
 
 const initial: SubscribeState = { ok: false, message: "" };
 
 export default function NewsletterForm() {
   const [state, formAction, isPending] = useActionState(subscribe, initial);
+  const lastTrackedMessage = useRef("");
+
+  useEffect(() => {
+    if (!state.ok || !state.message) return;
+    if (lastTrackedMessage.current === state.message) return;
+    lastTrackedMessage.current = state.message;
+    track("newsletter_subscribe", { source: "footer" });
+  }, [state.ok, state.message]);
 
   return (
     <div className="mt-2 space-y-2">

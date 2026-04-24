@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
-import { LogOut, UserCircle } from "lucide-react";
+import { BarChart3, LogOut, UserCircle } from "lucide-react";
 
 type Props = {
   user: User;
@@ -60,6 +60,16 @@ export default function UserMenu({
     ? "ring-border text-foreground hover:bg-surface"
     : "ring-white/40 text-white hover:bg-white/10";
 
+  const vercelAnalyticsUrl =
+    typeof process.env.NEXT_PUBLIC_VERCEL_ANALYTICS_URL === "string"
+      ? process.env.NEXT_PUBLIC_VERCEL_ANALYTICS_URL.trim()
+      : "";
+  const analyticsMenuHref =
+    vercelAnalyticsUrl.length > 0 ? vercelAnalyticsUrl : "/dashboard/analytics";
+  const analyticsOpensNewTab =
+    analyticsMenuHref.startsWith("http://") ||
+    analyticsMenuHref.startsWith("https://");
+
   return (
     <div className="relative" ref={ref}>
       <button
@@ -111,18 +121,50 @@ export default function UserMenu({
           </div>
 
           {isAdmin ? (
-            <Link
-              href="/create/newsletter"
-              role="menuitem"
-              prefetch={false}
-              onClick={() => {
-                setOpen(false);
-                onNavigate?.();
-              }}
-              className="flex items-center gap-2 px-3 py-2.5 text-sm text-foreground hover:bg-surface"
-            >
-              Admin dashboard
-            </Link>
+            <>
+              <Link
+                href="/create/newsletter"
+                role="menuitem"
+                prefetch={false}
+                onClick={() => {
+                  setOpen(false);
+                  onNavigate?.();
+                }}
+                className="flex items-center gap-2 px-3 py-2.5 text-sm text-foreground hover:bg-surface"
+              >
+                Admin dashboard
+              </Link>
+              {analyticsOpensNewTab ? (
+                <a
+                  href={analyticsMenuHref}
+                  role="menuitem"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => {
+                    setOpen(false);
+                    onNavigate?.();
+                  }}
+                  className="flex items-center gap-2 px-3 py-2.5 text-sm text-foreground hover:bg-surface"
+                >
+                  <BarChart3 className="h-4 w-4 shrink-0 text-muted" aria-hidden />
+                  Analytics
+                </a>
+              ) : (
+                <Link
+                  href={analyticsMenuHref}
+                  role="menuitem"
+                  prefetch={false}
+                  onClick={() => {
+                    setOpen(false);
+                    onNavigate?.();
+                  }}
+                  className="flex items-center gap-2 px-3 py-2.5 text-sm text-foreground hover:bg-surface"
+                >
+                  <BarChart3 className="h-4 w-4 shrink-0 text-muted" aria-hidden />
+                  Analytics
+                </Link>
+              )}
+            </>
           ) : null}
           <button
             type="button"

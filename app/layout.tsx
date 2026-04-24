@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import { isAdmin } from "@/lib/auth/roles";
 import { getSessionProfile } from "@/lib/auth/session";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const instrumentSans = Instrument_Sans({
@@ -77,6 +78,7 @@ export default async function RootLayout({
         <main className="min-h-screen">{children}</main>
         <Footer copyrightYear={copyrightYear} />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

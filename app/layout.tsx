@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import Script from "next/script";
 import { Instrument_Sans, Inter } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { isAdmin } from "@/lib/auth/roles";
 import { getSessionProfile } from "@/lib/auth/session";
+import { isPublicEnvTruthy } from "@/lib/env/public-flags";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -61,6 +63,17 @@ export default async function RootLayout({
   const initialIsAdmin = session ? isAdmin(session.profile.role) : false;
   const copyrightYear = new Date().getUTCFullYear();
 
+  const umamiScriptUrl = process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL?.trim();
+  const umamiWebsiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID?.trim();
+  const umamiEnabled = Boolean(umamiScriptUrl && umamiWebsiteId);
+
+  const vercelAnalyticsDisabled = isPublicEnvTruthy(
+    process.env.NEXT_PUBLIC_VERCEL_ANALYTICS_DISABLED
+  );
+  const vercelSpeedInsightsDisabled = isPublicEnvTruthy(
+    process.env.NEXT_PUBLIC_VERCEL_SPEED_INSIGHTS_DISABLED
+  );
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -77,8 +90,16 @@ export default async function RootLayout({
         <Header initialIsAdmin={initialIsAdmin} />
         <main className="min-h-screen">{children}</main>
         <Footer copyrightYear={copyrightYear} />
-        <Analytics />
-        <SpeedInsights />
+        {umamiEnabled ? (
+          <Script
+            id="umami-analytics"
+            src={umamiScriptUrl}
+            strategy="afterInteractive"
+            data-website-id={umamiWebsiteId}
+          />
+        ) : null}
+        {!vercelAnalyticsDisabled ? <Analytics /> : null}
+        {!vercelSpeedInsightsDisabled ? <SpeedInsights /> : null}
       </body>
     </html>
   );

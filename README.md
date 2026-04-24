@@ -14,7 +14,7 @@ Built with **Next.js 16** (App Router), **React 19**, **Tailwind CSS v4**, **Fra
 | **Newsletter signup** | Visitors | Footer and forms use the `subscribe` server action: emails go to Supabase `subscribers`, optional Resend welcome email, optional Brevo sync. |
 | **Contact** | Visitors | `/contact` shows company details and a “Book a free AI assessment” form. The form currently uses `preventDefault()` on submit — **no server handler** until you wire one (e.g. email or CRM). |
 | **Auth** | Users | `/login`, `/signup`, OAuth via Supabase (`/auth/callback`), sign-out via `/auth/logout`. |
-| **Admin dashboard** | Users with `profiles.role = 'admin'` | `/create/newsletter` — tabbed UI: **Newsletter** (campaigns, audience tags, schedule), **Blog** (TipTap editor, publish to `blog_posts`), **Subscribers** (table, tags, pagination). Access: **Account menu → Admin dashboard** (no duplicate admin button in the main header nav). **Account menu → Analytics** opens Vercel Web Analytics when `NEXT_PUBLIC_VERCEL_ANALYTICS_URL` is set, otherwise `/dashboard/analytics` (setup + outbound links). |
+| **Admin dashboard** | Users with `profiles.role = 'admin'` | `/create/newsletter` — tabbed UI: **Newsletter** (campaigns, audience tags, schedule), **Blog** (TipTap editor, publish to `blog_posts`), **Subscribers** (table, tags, pagination). Access: **Account menu → Admin dashboard** (no duplicate admin button in the main header nav). **Account menu → Analytics** opens the Vercel analytics URL in a new tab when `NEXT_PUBLIC_VERCEL_ANALYTICS_URL` is set; otherwise `/dashboard/analytics` (optional **Umami** shared dashboard iframe, Vercel outbound links, setup notes). |
 | **Legacy URLs** | — | `/blog/writeblogs` → admins redirect to `/create/newsletter?tab=blog`; others → `/blog`. `/dashboard` redirects signed-in users (admins → admin dashboard). |
 
 ---
@@ -35,7 +35,7 @@ Built with **Next.js 16** (App Router), **React 19**, **Tailwind CSS v4**, **Fra
 | Language | TypeScript | 5.x |
 | Blog content | Supabase `blog_posts` + MDX fallback; `next-mdx-remote` | — |
 | Newsletter | Supabase + Resend; optional Brevo | — |
-| Analytics | Vercel Web Analytics (`@vercel/analytics`) + Speed Insights (`@vercel/speed-insights`) in root layout | — |
+| Analytics | Vercel Web Analytics (`@vercel/analytics`) + Speed Insights (`@vercel/speed-insights`) in root layout; optional **Umami** via `next/script` + admin embed on `/dashboard/analytics` | — |
 | Validation | Zod | 4.x |
 
 ---
@@ -67,6 +67,11 @@ Create **`.env.local`** in the project root (see your team’s secret template i
 | `NEXT_PUBLIC_VERCEL_ANALYTICS_URL` | Optional: full URL to this project’s **Web Analytics** (or Observability) page on vercel.com — used by **Account → Analytics** (opens in a new tab). Example: `https://vercel.com/<team>/<project>/analytics` |
 | `NEXT_PUBLIC_VERCEL_PROJECT_URL` | Optional: project overview on Vercel — shown as a button on [`/dashboard/analytics`](app/dashboard/analytics/page.tsx) |
 | `NEXT_PUBLIC_VERCEL_SPEED_INSIGHTS_URL` | Optional: Speed Insights deep link — shown on [`/dashboard/analytics`](app/dashboard/analytics/page.tsx) when set |
+| `NEXT_PUBLIC_UMAMI_SCRIPT_URL` | Optional: full URL to Umami `script.js` on your self-hosted instance — loads the tracker from [`app/layout.tsx`](app/layout.tsx) when set together with `NEXT_PUBLIC_UMAMI_WEBSITE_ID` |
+| `NEXT_PUBLIC_UMAMI_WEBSITE_ID` | Optional: Umami website ID (UUID) — paired with `NEXT_PUBLIC_UMAMI_SCRIPT_URL` |
+| `NEXT_PUBLIC_UMAMI_SHARE_URL` | Optional: Umami **public share** dashboard URL — embedded in an iframe on [`/dashboard/analytics`](app/dashboard/analytics/page.tsx) for admins |
+| `NEXT_PUBLIC_VERCEL_ANALYTICS_DISABLED` | Optional: set to `1`, `true`, or `yes` to omit `<Analytics />` from the root layout (e.g. when using Umami only) |
+| `NEXT_PUBLIC_VERCEL_SPEED_INSIGHTS_DISABLED` | Optional: same pattern — omit `<SpeedInsights />` from the root layout |
 | `RESEND_API_KEY` | Resend API key (server-only) |
 | `RESEND_FROM_EMAIL` | **Transactional** “from”: `Experidium <contact@experidium.online>` — contact forms, account welcome, admin alerts |
 | `RESEND_NEWSLETTER_FROM` | **Newsletter / marketing** “from”: `Experidium <newsletter@experidium.online>` — campaigns, subscribe welcome; falls back to `RESEND_FROM_EMAIL` if unset |
